@@ -1,0 +1,22 @@
+{
+  "name": "salesforce-test-data-generator",
+  "version": "1.0.0",
+  "description": "Generate test data and custom objects in Salesforce",
+  "main": "salesforcetestdata_simple.js",
+  "scripts": {
+    "start": "node salesforcetestdata_simple.js",
+    "dev": "nodemon salesforcetestdata_simple.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "csv-parser": "^3.0.0",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "jsforce": "^3.3.1",
+    "multer": "^1.4.5-lts.1",
+    "snowflake": "^0.0.0"
+  },
+  "keywords": ["salesforce", "test-data", "custom-objects"],
+  "author": "",
+  "license": "MIT"
+} 
