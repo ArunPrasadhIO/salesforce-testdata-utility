@@ -1,11 +1,17 @@
 {
-  "name": "salesforce-test-data-generator",
+  "name": "salesforce-test-data-utility",
   "version": "1.0.0",
-  "description": "Generate test data and custom objects in Salesforce",
-  "main": "salesforcetestdata_simple.js",
+  "description": "A comprehensive Node.js application for creating Salesforce custom objects with bulk field generation and data upload capabilities",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node salesforcetestdata_simple.js",
-    "dev": "nodemon salesforcetestdata_simple.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bulk-upload": "chmod +x scripts/bulk_upload_all_objects.sh && ./scripts/bulk_upload_all_objects.sh",
+    "example": "chmod +x scripts/example_500_fields.sh && ./scripts/example_500_fields.sh",
+    "fix-permissions": "node utils/fix_field_permissions.js",
+    "clean-data": "rm -rf data/*.csv && echo 'CSV files cleaned'",
+    "setup": "npm install && echo 'Setup complete! Run npm start to begin.'"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -16,7 +22,23 @@
     "multer": "^1.4.5-lts.1",
     "snowflake": "^0.0.0"
   },
-  "keywords": ["salesforce", "test-data", "custom-objects"],
-  "author": "",
-  "license": "MIT"
+  "keywords": [
+    "salesforce", 
+    "test-data", 
+    "custom-objects", 
+    "bulk-upload", 
+    "field-generation",
+    "salesforce-api",
+    "csv-generation",
+    "automation"
+  ],
+  "author": "ArunPrasadhIO",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArunPrasadhIO/salesforce-test-data-utility.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
 } 

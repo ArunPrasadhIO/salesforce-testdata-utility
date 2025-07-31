@@ -17,12 +17,14 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Generated CSV files (comment out if you want to keep them)
-*.csv
+# Generated CSV files and data
+data/*.csv
+data/*.txt
 
 # Log files
 *.log
 logs/
+src/*.log
 
 # IDE and editor files
 .vscode/

@@ -31,10 +31,13 @@ A comprehensive Node.js application for creating Salesforce custom objects with 
    npm install
    ```
 
-3. Configure Salesforce credentials in `salesforcetestdata_simple.js`:
-   ```javascript
-   const username = "your-salesforce-username";
-   const password = "your-password" + "your-security-token";
+3. Configure Salesforce credentials:
+   ```bash
+   # Copy environment template
+   cp config/env.example .env
+   
+   # Edit .env with your credentials
+   nano .env
    ```
 
 ## 🎯 Usage
@@ -42,10 +45,62 @@ A comprehensive Node.js application for creating Salesforce custom objects with 
 ### Start the Application
 
 ```bash
-node salesforcetestdata_simple.js
+npm start
 ```
 
 The application will start on `http://localhost:3000`
+
+### Available NPM Scripts
+
+```bash
+npm start                # Start the application
+npm run dev              # Start with nodemon (development)
+npm run bulk-upload      # Run automated bulk upload script
+npm run example          # Run example field generation script
+npm run fix-permissions  # Fix field permissions for objects
+npm run clean-data       # Clean generated CSV files
+npm run setup            # Install dependencies and setup
+```
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Create a `.env` file from the template:
+```bash
+cp config/env.example .env
+```
+
+Required variables:
+```env
+SF_USERNAME=your-salesforce-username@example.com
+SF_PASSWORD=your-password
+SF_SECURITY_TOKEN=your-security-token
+SF_LOGIN_URL=https://login.salesforce.com  # Use https://test.salesforce.com for sandbox
+PORT=3000
+```
+
+### Advanced Configuration
+
+Modify `config/salesforce.config.js` for advanced settings:
+- **Performance tuning**: Batch sizes and delays
+- **Field defaults**: Default values for different field types
+- **API limits**: Maximum objects and fields per operation
+
+### Pre-built Configurations
+
+Use example configurations from `examples/field-configurations.js`:
+```javascript
+const configs = require('./examples/field-configurations');
+
+// Available configurations:
+// configs.small     - 50 fields (testing)
+// configs.medium    - 100 fields (development)
+// configs.large     - 200 fields (performance)
+// configs.contact   - Contact-like object
+// configs.account   - Account-like object
+// configs.opportunity - Opportunity-like object
+```
 
 ### Available Endpoints
 
@@ -128,11 +183,16 @@ Successfully tested with:
 - **Performance**: 1000+ data points per second
 
 ### Automated Bulk Operations
-Use the included `bulk_upload_all_objects.sh` script for automated multi-object uploads:
+Use the included automation script for multi-object uploads:
 
 ```bash
-chmod +x bulk_upload_all_objects.sh
-./bulk_upload_all_objects.sh
+npm run bulk-upload
+```
+
+Or run directly:
+```bash
+chmod +x scripts/bulk_upload_all_objects.sh
+./scripts/bulk_upload_all_objects.sh
 ```
 
 #### Bulk Upload Shell Script Features
@@ -186,17 +246,33 @@ Before running the script, ensure:
 ## 📁 Project Structure
 
 ```
-salesforceutil/
-├── salesforcetestdata_simple.js    # Main application file (recommended)
-├── salesforcetestdata.js           # Alternative implementation
-├── fix_field_permissions.js        # Standalone permission script
-├── bulk_upload_all_objects.sh      # 🚀 Automated multi-object bulk upload script
-├── package.json                    # Node.js dependencies
-├── package-lock.json               # Dependency lock file
-├── created_objects.txt             # Tracking file for created objects
-├── .gitignore                      # Git ignore patterns
-├── README.md                       # This documentation
-└── *.csv                          # Generated CSV files (gitignored)
+salesforce-test-data-utility/
+├── 📂 src/                         # Source Code
+│   ├── app.js                      # 🚀 Main application (entry point)
+│   ├── app-alternative.js          # Alternative implementation
+│   └── app-backup.js               # Backup version
+├── 📂 scripts/                     # Automation Scripts
+│   ├── bulk_upload_all_objects.sh  # 🔥 Multi-object bulk upload automation
+│   └── example_500_fields.sh       # Performance testing script
+├── 📂 utils/                       # Utility Scripts
+│   ├── fix_field_permissions.js    # Permission management utility
+│   └── create_object_with_visible_fields.js # Object creation utility
+├── 📂 config/                      # Configuration Files
+│   ├── salesforce.config.js        # Salesforce settings & performance tuning
+│   └── env.example                 # Environment variables template
+├── 📂 examples/                    # Example Configurations
+│   └── field-configurations.js     # Pre-built field configurations
+├── 📂 docs/                        # Documentation
+│   ├── API.md                      # 📖 Complete API documentation
+│   └── DEPLOYMENT.md               # 🚀 Deployment & production guide
+├── 📂 data/                        # Generated Data (gitignored)
+│   ├── *.csv                       # Generated CSV files
+│   └── created_objects.txt         # Object tracking file
+├── 📂 tests/                       # Test Files (placeholder)
+├── 📄 package.json                 # Node.js dependencies & scripts
+├── 📄 package-lock.json            # Dependency lock file
+├── 📄 .gitignore                   # Git ignore patterns
+└── 📄 README.md                    # This documentation
 ```
 
 ## 🔐 Security Features

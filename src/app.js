@@ -302,12 +302,21 @@ app.post("/generate-wide-csv", async (req, res) => {
     const csvContent = csvRows.join('\n');
     const fileName = `${objectName}_mapped_${recordCount}x${fields.length}.csv`;
     
-    require('fs').writeFileSync(fileName, csvContent, 'utf8');
+    // Ensure data directory exists
+    const dataDir = path.join(__dirname, '..', 'data');
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    
+    // Write CSV file to data directory
+    const filePath = path.join(dataDir, fileName);
+    require('fs').writeFileSync(filePath, csvContent, 'utf8');
     
     const dataPoints = recordCount * fields.length;
     res.json({
       message: `Wide CSV with proper field mapping generated successfully!`,
       fileName,
+      filePath,
       objectName,
       recordCount,
       fieldCount: fields.length,
@@ -409,12 +418,20 @@ app.post("/generate-csv", async (req, res) => {
     const csvContent = csvRows.join('\n');
     const fileName = `${objectName}_sample_${recordCount}_records.csv`;
     
-    // Write CSV file
-    fs.writeFileSync(fileName, csvContent, 'utf8');
+    // Ensure data directory exists
+    const dataDir = path.join(__dirname, '..', 'data');
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    
+    // Write CSV file to data directory
+    const filePath = path.join(dataDir, fileName);
+    fs.writeFileSync(filePath, csvContent, 'utf8');
     
     res.json({
       message: `CSV file generated successfully!`,
       fileName: fileName,
+      filePath: filePath,
       objectName: objectName,
       recordCount: recordCount,
       fieldCount: fields.length,
@@ -740,10 +757,18 @@ app.post("/create-objects", async (req, res) => {
         await createCustomObject(i);
       }
 
+      // Ensure data directory exists
+      const dataDir = path.join(__dirname, '..', 'data');
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
+
+      // Write object names to the correct file location
+      const objectTrackingFile = path.join(dataDir, 'created_objects.txt');
       createdObjectNames.forEach((name) => {
-        fs.appendFileSync("created_objects.txt", name + "\n", "utf8");
+        fs.appendFileSync(objectTrackingFile, name + "\n", "utf8");
       });
-      console.log("Custom object names have been appended to created_objects.txt");
+      console.log(`✅ ${createdObjectNames.length} custom object names have been appended to ${objectTrackingFile}`);
 
       res.send(`${numberOfObjects} custom objects with ${fieldConfigs.length} fields each created successfully! (Mode: ${generationMode})`);
     };
